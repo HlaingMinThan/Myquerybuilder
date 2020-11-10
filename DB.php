@@ -45,7 +45,12 @@ class DB
         $this->query();
         return $this;
     }
+    public function latest()
+    {
+        $this->orderBy("id", "desc");
+        return $this;
+    }
 }
 // SELECT * FROM `users` order BY id DESC;
-$users_order_desc=DB::table("users")->orderBy("name")->get();
+$users_order_desc=DB::table("users")->latest()->get();
 var_dump($users_order_desc);
