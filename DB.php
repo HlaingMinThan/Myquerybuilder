@@ -114,12 +114,15 @@ class DB
         $db=new DB();
         $datas=array_values($datasArr);
         $db->query($datas);
+        $inserted_id=self::$pdo->lastInsertId();
+        $new_user=DB::table($table)->where("id", $inserted_id)->first();
+        return $new_user;
     }
 }
 
-DB::create("users", [
-    "name"=>"goddie",
-    "image"=>"goddie image",
-    "location"=>"yangon"
-]);
-// var_dump($new_user);
+$new_user=DB::create("users", [
+    "name"=>"mgmg",
+    "image"=>"mgmg image",
+    "location"=>"chaung thar",
+ ]);
+var_dump($new_user);
