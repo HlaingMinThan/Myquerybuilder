@@ -22,18 +22,20 @@ class DB
         $db=new DB();
         $mysql="select * from $table";
         self::$sql=$mysql;
-        $db->query();
+        
         return $db;
     }
 
     public function get()
     {
+        $this->query();
         self::$datas=self::$res->fetchAll(PDO::FETCH_OBJ);
         return self::$datas;
     }
 
     public function count()
     {
+        $this->query();
         self::$count=self::$res->rowCount();
         return self::$count;
     }
@@ -42,7 +44,7 @@ class DB
     {
         $sql=" order by $orderBy $value";
         self::$sql.=$sql;
-        $this->query();
+        
         return $this;
     }
     public function latest()
@@ -52,6 +54,7 @@ class DB
     }
     public function first()
     {
+        $this->query();
         self::$datas=self::$res->fetch(PDO::FETCH_OBJ);
         return self::$datas;
     }
@@ -65,16 +68,7 @@ class DB
             $sql=" where $col $operator '$value'";
             self::$sql.=$sql;
         }
-        $this->query();
+       
         return $this;
     }
 }
-
-
-$users=DB::table("users")->where("name", "god")->get();//get all users who name is god
-
-
-$user=DB::table("users")->where("name", "god")->first();//get first users who name is god
-
-
-$users=DB::table("users")->where("name", "god")->latest()->get();//get all users who name is god by descending
