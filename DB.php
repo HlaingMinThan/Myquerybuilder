@@ -12,10 +12,10 @@ class DB
         self::$pdo=new PDO("mysql:host=localhost;dbname=pdoCrud", "admin", 123456);
         self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); //pdo error show mode on
     }
-    public function query()
+    public function query($datasArr=[])
     {
         self::$res=self::$pdo->prepare(self::$sql);
-        self::$res->execute();
+        self::$res->execute($datasArr);
     }
     public static function table($table)
     {
@@ -97,7 +97,29 @@ class DB
        
         return $this;
     }
+
+    // create
+    public static function create($table, $datasArr)
+    {
+        $getDatasKey=array_keys($datasArr);
+        $cols=implode(",", $getDatasKey);
+        $unknownDataPdoField="";
+        foreach ($getDatasKey as $key) {
+            // var_dump($key);
+            $unknownDataPdoField.="?,";
+        }
+        $questionMark=rtrim($unknownDataPdoField, ",");
+        $sql="insert into $table ($cols) values ($questionMark)";
+        self::$sql=$sql;
+        $db=new DB();
+        $datas=array_values($datasArr);
+        $db->query($datas);
+    }
 }
 
-$user=DB::table('users')->where("name", "god")->orWhere("location", "taung gyi")->get();
-var_dump($user);
+DB::create("users", [
+    "name"=>"goddie",
+    "image"=>"goddie image",
+    "location"=>"yangon"
+]);
+// var_dump($new_user);
