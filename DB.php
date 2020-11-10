@@ -130,11 +130,15 @@ class DB
         $update_user =DB::table($table)->where("id", $id)->first() ;
         return $update_user;
     }
+    public static function delete($table, $id)
+    {
+        $sql="delete from $table where id=$id";
+        self::$sql=$sql;
+        $db=new DB();
+        $db->query();
+        return true;
+    }
 }
 
-$new_user=DB::update("users", [
-    "name"=>"mgmg",
-    "image"=>"mgmg image",
-    "location"=>"chaung thar",
-], 12);
-var_dump($new_user);
+$delete_user=DB::delete("users", 12);
+var_dump($delete_user);
