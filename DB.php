@@ -55,6 +55,26 @@ class DB
         self::$datas=self::$res->fetch(PDO::FETCH_OBJ);
         return self::$datas;
     }
+    public function where($col, $operator, $value='')
+    {
+        if (func_num_args()===2) {
+            $sql=" where $col = '$operator'";
+            self::$sql.=$sql;
+        }
+        if (func_num_args()===3) {
+            $sql=" where $col $operator '$value'";
+            self::$sql.=$sql;
+        }
+        $this->query();
+        return $this;
+    }
 }
-$user=DB::table("users")->first();
-var_dump($user);
+
+
+$users=DB::table("users")->where("name", "god")->get();//get all users who name is god
+
+
+$user=DB::table("users")->where("name", "god")->first();//get first users who name is god
+
+
+$users=DB::table("users")->where("name", "god")->latest()->get();//get all users who name is god by descending
