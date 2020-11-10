@@ -84,7 +84,20 @@ class DB
        
         return $this;
     }
+    public function orWhere($col, $operator, $value='')
+    {
+        if (func_num_args()===2) {
+            $sql=" or $col = '$operator'";
+            self::$sql.=$sql;
+        }
+        if (func_num_args()===3) {
+            $sql=" or $col $operator '$value'";
+            self::$sql.=$sql;
+        }
+       
+        return $this;
+    }
 }
 
-$user=DB::table('users')->where("name", "new user")->andWhere("location", "taung gyi")->first();
+$user=DB::table('users')->where("name", "god")->orWhere("location", "taung gyi")->get();
 var_dump($user);
