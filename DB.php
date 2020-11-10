@@ -37,7 +37,15 @@ class DB
         self::$count=self::$res->rowCount();
         return self::$count;
     }
-}
 
-$number_of_users=DB::table("users")->count();
-var_dump($number_of_users);
+    public function orderBy($orderBy, $value="ASC")
+    {
+        $sql=" order by $orderBy $value";
+        self::$sql.=$sql;
+        $this->query();
+        return $this;
+    }
+}
+// SELECT * FROM `users` order BY id DESC;
+$users_order_desc=DB::table("users")->orderBy("name")->get();
+var_dump($users_order_desc);
