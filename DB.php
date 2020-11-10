@@ -50,7 +50,11 @@ class DB
         $this->orderBy("id", "desc");
         return $this;
     }
+    public function first()
+    {
+        self::$datas=self::$res->fetch(PDO::FETCH_OBJ);
+        return self::$datas;
+    }
 }
-// SELECT * FROM `users` order BY id DESC;
-$users_order_desc=DB::table("users")->latest()->get();
-var_dump($users_order_desc);
+$user=DB::table("users")->first();
+var_dump($user);
