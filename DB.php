@@ -118,11 +118,23 @@ class DB
         $new_user=DB::table($table)->where("id", $inserted_id)->first();
         return $new_user;
     }
+    public static function update($table, $datas, $id)
+    {
+        $cols=implode('=?, ', array_keys($datas));
+        $cols.="=?";
+        $sql="update $table set $cols where id=$id";
+        self::$sql=$sql;
+        $db=new DB();
+        $dataValuesArr=array_values($datas);
+        $db->query($dataValuesArr); //after execute
+        $update_user =DB::table($table)->where("id", $id)->first() ;
+        return $update_user;
+    }
 }
 
-$new_user=DB::create("users", [
+$new_user=DB::update("users", [
     "name"=>"mgmg",
     "image"=>"mgmg image",
     "location"=>"chaung thar",
- ]);
+], 12);
 var_dump($new_user);
